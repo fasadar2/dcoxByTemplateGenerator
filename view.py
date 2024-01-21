@@ -20,7 +20,8 @@ def openData():
     dataPathLabel.configure(text=f"Выбранный excel файл с данными: {filepath}")
 if __name__ == '__main__':
     mainWindow = tk.Tk()
-    mainWindow.title("Dcox Generator")
+    version = 1.0
+    mainWindow.title(f"Dcox Generator {version}")
     mainWindow.geometry("800x600")
     mainWindow.iconbitmap("mainIco.ico")
     tk.Label(text="Instructions",font='Times 14',justify='left').pack()

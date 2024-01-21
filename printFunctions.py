@@ -39,20 +39,10 @@ def decompileExcel(dataPath:str) -> dict:
         row = sheet.row_values(i)
         for ii in range(len(keys_list)):
             rezult[keys_list[ii]].append(row[ii])
-    # for i in range(1,sheet.nrows):
-    #     row = sheet.row_values(i)
-    # for i in range(1, sheet.nrows):
-    #     row = sheet.row_values(i)
-    #     row_dict = {}
-    #     for j in range(len(row)):
-    #         row_dict[keys_list[j]] = row[j]
-    #     rezult[i] = row_dict
+
 
     return rezult
 
-# temp = CreateDocByTemplate()
-# temp.save("output.docx")
-# decompileExcel()
 def createDocx(dataPath: str, templatepath: str):
     data = decompileExcel(dataPath)
     t1 = Thread(target=CreateDocByTemplate, args=(data,templatepath))
