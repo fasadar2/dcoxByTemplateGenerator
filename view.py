@@ -2,8 +2,17 @@ import tkinter  as tk
 from tkinter import ttk
 from tkinter import filedialog
 from printFunctions import createDocx
+
 templatePath = ""
 dataPath = ""
+def readMeta():
+    meta = {"varsion":"","changes":"","author":""}
+    with open("meta.meta","r") as file:
+        text = file.read()
+        meta["version"] = str(text[text.find("version:")+1:text.find("&&")])
+        meta["changes"] = text[text.find("changes:") + 1:text.find("&&")]
+        meta["author"] = text[text.find("author:") + 1:text.find("&&")]
+    return meta
 def openTemplate():
     filepath = filedialog.askopenfilename(filetypes=[("docx files", "*.docx")])
     global templatePath
@@ -19,8 +28,9 @@ def openData():
     filepath = filepath[len(filepath) - 1]
     dataPathLabel.configure(text=f"Выбранный excel файл с данными: {filepath}")
 if __name__ == '__main__':
+    meta = readMeta()
     mainWindow = tk.Tk()
-    version = 1.0
+    version = meta["version"]
     mainWindow.title(f"Dcox Generator {version}")
     mainWindow.geometry("800x600")
     mainWindow.iconbitmap("mainIco.ico")
@@ -41,4 +51,5 @@ if __name__ == '__main__':
 
     CreateDocxButton = ttk.Button(text="Заполнить документ",width=50, command=lambda : createDocx(dataPath,templatePath))
     CreateDocxButton.pack()
+
     mainWindow.mainloop()
