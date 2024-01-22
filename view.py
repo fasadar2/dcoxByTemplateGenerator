@@ -10,7 +10,7 @@ dataPath = ""
 
 def ReadMeta():
     meta = {"varsion": "", "changes": "", "author": ""}
-    with open("meta.meta", "r") as file:
+    with open("_internal/meta.meta", "r") as file:
         text = file.read()
         meta["version"] = str(text[text.find("version:") + 1:text.find("&&")])
         meta["author"] = text[text.find("author:") + 1:text.find("&&")]
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     author = meta["author"]
     mainWindow.title(f"Dcox Generator {version}")
     mainWindow.geometry("800x600")
-    mainWindow.iconbitmap("mainIco.ico")
+    mainWindow.iconbitmap("_internal/mainIco.ico")
     ttk.Label(text="Инструкция:", font='Times 14', justify='left', style="BW.TLabel")\
         .grid(column=1, row=0,ipadx=6,columnspan=2, ipady=6, padx=4, pady=4,sticky=tk.W)
     ttk.Label(text="1. Выберите шаблон в формате docx", font='Times 14', justify='left', style="BW.TLabel")\
