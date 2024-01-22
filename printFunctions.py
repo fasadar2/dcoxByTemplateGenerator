@@ -3,7 +3,7 @@ from tkinter import ttk
 import docx
 import xlrd
 from threading import Thread
-
+import os
 
 def CreateDocThread(data: dict, templatePath: str, coursor: int, keys: list) -> None:
     try:
@@ -28,6 +28,7 @@ def CreateDocThread(data: dict, templatePath: str, coursor: int, keys: list) -> 
 def CreateDocByTemplate(data: dict, templatePath: str) -> None:
     keys = list(data.keys())
     try:
+        os.mkdir("bin")
         for i in range(len(data[keys[0]])):
             Thread(target=CreateDocThread, args=(data, templatePath, i, keys)).start()
         tkinter.messagebox.showinfo(title="Вас посетил успех", message="Файлы успешно созданы")
