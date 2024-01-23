@@ -1,11 +1,12 @@
 import tkinter.messagebox
-from tkinter import ttk
+from tkinter import ttk, IntVar
+import tkinter as tk
 import docx
 import xlrd
 from threading import Thread
 import os
 
-def CreateDocThread(data: dict, templatePath: str, coursor: int, keys: list) -> None:
+def CreateDocThread(data: dict, templatePath: str, coursor: int, keys: list,progressbar:ttk.Progressbar) -> None:
     try:
         doc = docx.Document(templatePath)
         for key in keys:
@@ -19,6 +20,8 @@ def CreateDocThread(data: dict, templatePath: str, coursor: int, keys: list) -> 
                     for cell in row.cells:
                         if key in cell.text:
                             cell.text = cell.text.replace(key, data[key][coursor])
+        progressbar.step()
+
         doc.save(f"bin/{coursor}.docx")
 
     except Exception as e:
@@ -27,11 +30,18 @@ def CreateDocThread(data: dict, templatePath: str, coursor: int, keys: list) -> 
 
 def CreateDocByTemplate(data: dict, templatePath: str) -> None:
     keys = list(data.keys())
+    value_var = IntVar(value=len(data[keys[0]]))
+    progressbar = ttk.Progressbar(orient="horizontal",variable=value_var, length=590)
+    progressbar.grid(column=1, row=7, columnspan=2, ipadx=6, ipady=6, padx=4, pady=4, sticky=tk.SE)
     try:
-        os.mkdir("bin")
+        if not os.path.isdir('bin'):
+            os.mkdir("bin")
+        progressbar.start()
         for i in range(len(data[keys[0]])):
-            Thread(target=CreateDocThread, args=(data, templatePath, i, keys)).start()
+            Thread(target=CreateDocThread, args=(data, templatePath, i, keys, progressbar)).start()
+        progressbar.stop()
         tkinter.messagebox.showinfo(title="Вас посетил успех", message="Файлы успешно созданы")
+        progressbar.destroy()
     except Exception as e:
         tkinter.messagebox.showerror(title="Исключеньеце необработанное", message=str(e))
 
